@@ -1,13 +1,30 @@
-# Sample Hardhat Project
+# Pixpurse
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+Pixpurse is an NFT Collection different from all others. NFT Holders will have their NFT images dynamically shaped based on their token balances. If the user has $2000 in her wallet, the image will be a wallet beautiful vectorial wallet showing that balance.
 
-Try running some of the following tasks:
-
+## Testing Locally
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
 npx hardhat run scripts/deploy.js
 ```
+It will print something like this:
+
+```
+data:application/json;base64,eyJuYW1lIjogIlBpeFB1cnNlIFdhbGxldCAjMSIsImF0dHJpYnV0ZXMiOiBbIHsgInRyYWl0X3R5cGUiOiAiY29sb3IiLCAidmFsdWUiOiAicmVkIiB9XSwiZGVzY3JpcHRpb24iOiAiYmxhIGJsYSBibGEiLCJpbWFnZSI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIzYVdSMGFEMG5NakF3SnlCb1pXbG5hSFE5SnpFd01DY2dlRzFzYm5NOUoyaDBkSEE2THk5M2QzY3Vkek11YjNKbkx6SXdNREF2YzNabkp6NDhjbVZqZENCM2FXUjBhRDBuTWpBd0p5Qm9aV2xuYUhROUp6RXdNQ2NnWm1sc2JEMG5JMll4WmpGbU1TY2djbmc5SnpFMUp5QnllVDBuTVRVbkx6NDhkR1Y0ZENCNFBTY3hNQ2NnZVQwbk1qVW5JR1p2Ym5RdFptRnRhV3g1UFNkQmNtbGhiQ2NnWm05dWRDMXphWHBsUFNjeE5DY2dabWxzYkQwbllteGhZMnNuUGtWVVNEb2dNVEF3TURBdU1Ed3ZkR1Y0ZEQ0OGRHVjRkQ0I0UFNjeE1DY2dlVDBuTlRBbklHWnZiblF0Wm1GdGFXeDVQU2RCY21saGJDY2dabTl1ZEMxemFYcGxQU2N4TkNjZ1ptbHNiRDBuWW14aFkyc25QbFZUUkVNNklEQXVNRHd2ZEdWNGRENDhkR1Y0ZENCNFBTY3hNQ2NnZVQwbk56VW5JR1p2Ym5RdFptRnRhV3g1UFNkQmNtbGhiQ2NnWm05dWRDMXphWHBsUFNjeE5DY2dabWxzYkQwbllteGhZMnNuUGxWVFJGUTZJREF1TUR3dmRHVjRkRDQ4TDNOMlp6ND0ifQ==
+```
+
+Copy and paste this in your browser and you will get this:
+```
+{"name": "PixPurse Wallet #1","attributes": [ { "trait_type": "color", "value": "red" }],"description": "bla bla bla","image": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMjAwJyBoZWlnaHQ9JzEwMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48cmVjdCB3aWR0aD0nMjAwJyBoZWlnaHQ9JzEwMCcgZmlsbD0nI2YxZjFmMScgcng9JzE1JyByeT0nMTUnLz48dGV4dCB4PScxMCcgeT0nMjUnIGZvbnQtZmFtaWx5PSdBcmlhbCcgZm9udC1zaXplPScxNCcgZmlsbD0nYmxhY2snPkVUSDogMTAwMDAuMDwvdGV4dD48dGV4dCB4PScxMCcgeT0nNTAnIGZvbnQtZmFtaWx5PSdBcmlhbCcgZm9udC1zaXplPScxNCcgZmlsbD0nYmxhY2snPlVTREM6IDAuMDwvdGV4dD48dGV4dCB4PScxMCcgeT0nNzUnIGZvbnQtZmFtaWx5PSdBcmlhbCcgZm9udC1zaXplPScxNCcgZmlsbD0nYmxhY2snPlVTRFQ6IDAuMDwvdGV4dD48L3N2Zz4="}
+```
+
+Now copy and paste the image url in your browser:
+
+```
+data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMjAwJyBoZWlnaHQ9JzEwMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48cmVjdCB3aWR0aD0nMjAwJyBoZWlnaHQ9JzEwMCcgZmlsbD0nI2YxZjFmMScgcng9JzE1JyByeT0nMTUnLz48dGV4dCB4PScxMCcgeT0nMjUnIGZvbnQtZmFtaWx5PSdBcmlhbCcgZm9udC1zaXplPScxNCcgZmlsbD0nYmxhY2snPkVUSDogMTAwMDAuMDwvdGV4dD48dGV4dCB4PScxMCcgeT0nNTAnIGZvbnQtZmFtaWx5PSdBcmlhbCcgZm9udC1zaXplPScxNCcgZmlsbD0nYmxhY2snPlVTREM6IDAuMDwvdGV4dD48dGV4dCB4PScxMCcgeT0nNzUnIGZvbnQtZmFtaWx5PSdBcmlhbCcgZm9udC1zaXplPScxNCcgZmlsbD0nYmxhY2snPlVTRFQ6IDAuMDwvdGV4dD48L3N2Zz4=
+```
+
+and you will get a beatiful image showing the test user wallet image with its balances
+
+
+
+
