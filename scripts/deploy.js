@@ -39,9 +39,9 @@ async function main() {
   await pixPurse["mint(address)"](networks[hre.network.name].usdc)
   await pixPurse.mint()
 
-  console.log(extractSVG(await pixPurse.tokenURI(1)))
-  console.log(extractSVG(await pixPurse.tokenURI(2)))
-  console.log(extractSVG(await pixPurse.tokenURI(3)))
+  console.log(await pixPurse.tokenURI(1))
+  console.log(await pixPurse.tokenURI(2))
+  console.log(await pixPurse.tokenURI(3))
 
   console.log("PixPurse deployed to:", pixPurse.target)
 }
