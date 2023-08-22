@@ -5,48 +5,51 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Base64} from "./Base64.sol";
 
+interface IExtendedERC20 is IERC20 {
+    function decimals() external view returns (uint8);
+}
+
 contract PixPurse is ERC721Enumerable {
-    IERC20 public usdc;
-    IERC20 public usdt;
+    address public defaultToken = address(0); // Represents ETH
+    mapping(address => address) public chosenToken;
 
     string public SVG1 =
-        "<svg width='200' height='100' xmlns='http://www.w3.org/2000/svg'><rect width='200' height='100' fill='#f1f1f1' rx='15' ry='15'/><text x='10' y='25' font-family='Arial' font-size='14' fill='black'>ETH: ";
-    string public SVG2 =
-        "</text><text x='10' y='50' font-family='Arial' font-size='14' fill='black'>USDC: ";
-    string public SVG3 =
-        "</text><text x='10' y='75' font-family='Arial' font-size='14' fill='black'>USDT: ";
-    string public SVG4 = "</text></svg>";
+        '<svg width="200" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="100" fill="#f1f1f1" rx="15" ry="15"/><text x="10" y="50" font-family="Arial" font-size="14" fill="black">Balance: ';
+    string public SVG2 = "</text></svg>";
 
-    constructor(address _usdc, address _usdt) ERC721("PixPurse", "PPNFT") {
-        usdc = IERC20(_usdc);
-        usdt = IERC20(_usdt);
-    }
+    constructor() ERC721("PixPurse", "PPNFT") {}
 
-    // Mint a new NFT for the caller
     function mint() public {
-        uint256 tokenId = totalSupply() + 1;
-        _safeMint(msg.sender, tokenId);
+        mint(msg.sender, defaultToken);
     }
 
     function mint(address holder) public {
+        mint(holder, defaultToken);
+    }
+
+    function mint(address holder, address tokenAddress) public {
         uint256 tokenId = totalSupply() + 1;
         _safeMint(holder, tokenId);
+        chosenToken[holder] = tokenAddress;
     }
 
+    function setChosenToken(uint256 tokenId, address tokenAddress) external {
+        // Ensure the caller is the owner of the token
+        require(ownerOf(tokenId) == msg.sender, "Not the owner of this NFT");
 
-    // Get the native Ether balance of the NFT owner
-    function getEtherBalance(
-        address owner
-    ) public view returns (string memory) {
-        return formatBalance(owner.balance, 18);
+        // Set the chosen token for this NFT
+        chosenToken[msg.sender] = tokenAddress;
     }
 
-    function getUSDCBalance(address owner) public view returns (string memory) {
-        return formatBalance(usdc.balanceOf(owner), 18);
-    }
-
-    function getUSDTBalance(address owner) public view returns (string memory) {
-        return formatBalance(usdt.balanceOf(owner), 18);
+    function getBalance(address owner) public view returns (string memory) {
+        address tokenAddress = chosenToken[owner];
+        if (tokenAddress == defaultToken) {
+            return formatBalance(owner.balance, 18);
+        } else {
+            IExtendedERC20 token = IExtendedERC20(tokenAddress);
+            uint8 decimals = token.decimals();
+            return formatBalance(token.balanceOf(owner), decimals);
+        }
     }
 
     function formatBalance(
@@ -67,7 +70,6 @@ contract PixPurse is ERC721Enumerable {
             );
     }
 
-    // Helper function to convert uint to string
     function uintToString(uint256 v) internal pure returns (string memory str) {
         if (v == 0) {
             return "0";
@@ -90,15 +92,12 @@ contract PixPurse is ERC721Enumerable {
     function tokenURI(
         uint256 tokenId
     ) public view virtual override returns (string memory) {
+        string memory balance = getBalance(ownerOf(tokenId));
         string memory finalSvg = string(
             abi.encodePacked(
                 SVG1,
-                getEtherBalance(ownerOf(tokenId)),
-                SVG2,
-                getUSDCBalance(ownerOf(tokenId)),
-                SVG3,
-                getUSDTBalance(ownerOf(tokenId)),
-                SVG4
+                balance,
+                SVG2
             )
         );
 

@@ -29,13 +29,19 @@ async function main() {
   }
 
   const PixPurse = await hre.ethers.getContractFactory("PixPurse")
-  const pixPurse = await PixPurse.deploy(
-    networks[hre.network.name].usdc,
-    networks[hre.network.name].usdt)
+  const pixPurse = await PixPurse.deploy()
   await pixPurse.waitForDeployment()
 
-  await pixPurse["mint(address)"]("0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f")
+  await pixPurse["mint(address,address)"](
+    "0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f",
+    networks[hre.network.name].usdc
+  )
+
+  await pixPurse.mint()
+
   console.log(await pixPurse.tokenURI(1))
+
+  console.log(await pixPurse.tokenURI(2))
 
   console.log("PixPurse deployed to:", pixPurse.target)
 }
