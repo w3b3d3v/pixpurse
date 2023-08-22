@@ -33,18 +33,32 @@ async function main() {
   await pixPurse.waitForDeployment()
 
   await pixPurse["mint(address,address)"](
-    "0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f",
-    networks[hre.network.name].usdc
+    networks[hre.network.name].usdc,
+    "0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f"
   )
-
+  await pixPurse["mint(address)"](networks[hre.network.name].usdc)
   await pixPurse.mint()
 
-  console.log(await pixPurse.tokenURI(1))
-
-  console.log(await pixPurse.tokenURI(2))
+  console.log(extractSVG(await pixPurse.tokenURI(1)))
+  console.log(extractSVG(await pixPurse.tokenURI(2)))
+  console.log(extractSVG(await pixPurse.tokenURI(3)))
 
   console.log("PixPurse deployed to:", pixPurse.target)
 }
+
+function extractSVG(tokenURI) {
+  // Decode the base64 encoded JSON
+  const decodedJson = Buffer.from(tokenURI.split(",")[1], "base64").toString()
+
+  // Parse the JSON data
+  const jsonData = JSON.parse(decodedJson)
+
+  // Extract and decode the base64 encoded SVG image string
+  const svgData = Buffer.from(jsonData.image.split(",")[1], "base64").toString()
+
+  return svgData
+}
+
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
